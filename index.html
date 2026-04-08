@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AKC SEA KAYAK EXPEDITION PLAN</title>
+
+<!-- PWA / iOS Home Screen Icons -->
+<link rel="apple-touch-icon" href="icon-192-v3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-192-v3.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icon-192-v3.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icon-192-v3.png">
+<link rel="apple-touch-icon" sizes="76x76" href="icon-192-v3.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AKC Kayak">
+<meta name="theme-color" content="#0369a1">
+<link rel="manifest" href="manifest.json">
+
+<style>
+:root{--akc-blue:#0369a1;--emergency-red:#dc2626;--garmin-blue:#007dc3;}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  background:#e6edf5;
+  color:#0f172a;
+  margin:0;
+  padding:10px;
+  padding-bottom: 20px;
+}
+
+.header{text-align:center;margin-bottom:10px;}
+.header img{max-width:120px;}
+h1{margin:5px 0;font-size:20px; color:#0369a1;}
+
+/* Navigazione principale */
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.nav-btn {
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  background: #cbd5e1;
+  color: #1e293b;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-btn.active {
+  background: var(--akc-blue);
+  color: white;
+}
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.nav-btn i, .nav-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Pannelli */
+.panel {
+  display: none;
+}
+.panel.active {
+  display: block;
+}
+
+.section{
+  background:#fff;
+  margin-bottom:10px;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.section-header{
+  padding:12px;
+  font-weight:bold;
+  cursor:pointer;
+  background:#cbd5e1;
+  color:var(--akc-blue);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:nowrap;
+}
+.section-header i,
+.section-header svg{
+  flex-shrink:0;
+  width:20px;
+  height:20px;
+}
+.section-header span{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.section-content{display:none;padding:10px;background:#f1f5f9;}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+label.main {
+  flex: 3;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+label.main input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.pos{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  flex-shrink:0;
+}
+.pos label{
+  font-size:10px;
+  border:1px solid #999;
+  border-radius:4px;
+  padding:4px 6px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  cursor:pointer;
+  background: white;
+}
+.pos input{
+  margin-bottom:2px;
+  cursor:pointer;
+  width:14px;
+  height:14px;
+}
+input, textarea{
+  width:100%;
+  margin:3px 0;
+  padding:8px;
+  border-radius:5px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+button{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 12px;
+  margin:4px;
+  border-radius:8px;
+  border:1px solid var(--akc-blue);
+  background:white;
+  color:var(--akc-blue);
+  font-size:13px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+button:hover{
+  background:var(--akc-blue);
+  color:white;
+}
+button i{width:16px;height:16px;}
+.day{background:#e2e8f0;padding:8px;margin-top:5px;border-radius:8px;margin-bottom:8px;}
+.day-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:bold;padding:4px;}
+.meal{font-size:12px;margin-top:6px;font-weight:bold;}
+.delete-item-btn{
+  background:#dc2626;
+  color:white;
+  border-color:#b91c1c;
+  padding:5px 10px;
+  font-size:12px;
+  margin:0;
+  flex-shrink:0;
+}
+.delete-item-btn:hover{background:#b91c1c;}
+.edit-item-btn{
+  background:#f59e0b;
+  color:white;
+  border-color:#d97706;
+  padding:5px 10px;
+  font-size:12px;
+  margin:0;
+  flex-shrink:0;
+}
+.edit-item-btn:hover{background:#d97706;}
+
+/* Contatti emergenza */
+.emergency-section { 
+  background: #fff0f0; 
+  border-left: 5px solid var(--emergency-red);
+  margin-top: 15px;
+}
+.contact-card { background: white; border-radius: 12px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-wrap: wrap; align-items: center; gap: 10px;}
+.contact-info { flex: 2; min-width: 150px;}
+.contact-name { font-weight: bold; font-size: 16px;}
+.contact-detail { font-size: 12px; color: #475569; font-family: monospace;}
+.contact-actions { display: flex; gap: 8px; flex-wrap: wrap;}
+.btn-emergency { background: var(--emergency-red); border-color: var(--emergency-red); color: white;}
+.btn-emergency:hover { background: #b91c1c;}
+.btn-sat { background: #1e3a8a; border-color: #1e3a8a; color: white;}
+.btn-sat:hover { background: #0f2b5e; border-color: #0f2b5e;}
+.gavone-item { background: #f8fafc; padding: 6px 10px; margin: 5px 0; border-radius: 8px; font-size: 13px; border-left: 3px solid var(--akc-blue);}
+
+/* ROTTE MARINA - MODALE SCORREVOLE */
+.route-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 2000;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.route-modal-card {
+  background: #f1f5f9;
+  margin: 16px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
+}
+.route-modal-header {
+  background: #1e3a8a;
+  color: white;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.route-modal-header button {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 4px 12px;
+  margin: 0;
+  border-radius: 40px;
+}
+.route-modal-content {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+#routeMapFull {
+  height: 380px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  background: #a8c8e8;
+  border: 1px solid #94a3b8;
+  width: 100%;
+}
+.gps-coords {
+  background: #1e3a8a;
+  color: white;
+  padding: 10px;
+  border-radius: 12px;
+  margin: 12px 0;
+  font-family: monospace;
+  text-align: center;
+  font-size: 13px;
+}
+.route-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+.waypoint-list {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #cbd5e1;
+  margin: 10px 0;
+}
+.waypoint-item {
+  padding: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+.distance-info {
+  background: #e0f2fe;
+  padding: 12px;
+  border-radius: 12px;
+  margin: 12px 0;
+  font-weight: bold;
+  text-align: center;
+}
+.saved-routes {
+  margin-top: 12px;
+}
+.route-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 32px;
+  margin: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+.route-chip:hover { background: var(--akc-blue); color: white;}
+.route-chip button { background: #dc2626; border: none; color: white; border-radius: 20px; padding: 2px 8px; margin: 0; font-size: 10px;}
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e2e8f0;
+  border-radius: 24px;
+  padding: 4px 8px 4px 12px;
+  margin: 4px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.user-chip.active { background: var(--akc-blue); color: white;}
+.user-chip button { background: transparent; border: 1px solid #94a3b8; padding: 2px 6px; margin: 0; font-size: 11px; border-radius: 20px;}
+.user-chip button:hover { background: #dc2626; border-color: #dc2626; color: white;}
+
+.import-route-area {
+  background: #fef9c3;
+  padding: 12px;
+  border-radius: 16px;
+  margin: 12px 0;
+  border: 2px dashed #ca8a04;
+}
+.add-item-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.add-item-row input {
+  flex: 2;
+  margin: 0;
+}
+.add-item-row button {
+  margin: 0;
+}
+
+/* Modale di esportazione */
+.export-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
+.export-modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.export-modal-content h3 {
+  margin-top: 0;
+  color: var(--akc-blue);
+}
+.export-modal-content input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.export-modal-content button {
+  margin: 5px;
+}
+
+.btn-garmin {
+  background: var(--garmin-blue);
+  border-color: var(--garmin-blue);
+  color: white;
+}
+.btn-garmin:hover {
+  background: #005a8c;
+  border-color: #005a8c;
+}
+
+.export-preview {
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 12px 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.export-preview h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--akc-blue);
+}
+.preview-waypoint {
+  font-size: 11px;
+  padding: 4px 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-family: monospace;
+}
+
+/* Barra utente attivo */
+.active-user-bar {
+  margin: 10px 0;
+  padding: 8px 12px;
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.active-user-bar i {
+  width: 18px;
+  height: 18px;
+}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+
+<div class="header">
+<img src="icon-192-v3.png" style="width:120px;" alt="logo">
+<h1>AKC SEA KAYAK EXPEDITION PLAN</h1>
+</div>
+
+<!-- Campi utente -->
+<div style="margin:10px 0; display:flex; gap:10px; flex-wrap:wrap;">
+  <input id="user_name" placeholder="Nome utilizzatore" style="flex:1">
+  <input id="kayak_type" placeholder="Tipo di kayak" style="flex:1">
+</div>
+
+<!-- Bottoni navigazione -->
+<div class="nav-buttons">
+  <button class="nav-btn" data-panel="map"><i data-lucide="map-pin"></i> Mappa / Rotta</button>
+  <button class="nav-btn" data-panel="windy"><i data-lucide="wind"></i> Windy</button>
+  <button class="nav-btn active" data-panel="checklist"><i data-lucide="clipboard-list"></i> Checklist PRO</button>
+</div>
+
+<!-- PANNELLO MAPPA -->
+<div id="panel-map" class="panel">
+  <div style="text-align:center; padding:20px;">
+    <button onclick="openRouteModal()" style="padding:12px 24px; font-size:16px;"><i data-lucide="map"></i> Apri Mappa e Rotte</button>
+  </div>
+</div>
+
+<!-- PANNELLO WINDY -->
+<div id="panel-windy" class="panel">
+  <div style="text-align:center; padding:20px;">
+    <button onclick="openWindyInPanel()" style="padding:12px 24px; font-size:16px;"><i data-lucide="wind"></i> Apri Windy con posizione corrente</button>
+  </div>
+</div>
+
+<!-- PANNELLO CHECKLIST PRO -->
+<div id="panel-checklist" class="panel active">
+  <!-- Bottoni azione -->
+  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
+    <button onclick="saveData()"><i data-lucide="save"></i>Salva</button>
+    <button onclick="resetData()"><i data-lucide="rotate-ccw"></i>Reset</button>
+    <button onclick="printChecklist()"><i data-lucide="printer"></i>Stampa</button>
+    <button onclick="shareChecklist()"><i data-lucide="share-2"></i>Condividi</button>
+    <button onclick="exportCompleteList()"><i data-lucide="upload"></i>Esporta lista</button>
+    <input type="file" id="importFile" style="display:none" onchange="importCompleteList(event)">
+    <button onclick="document.getElementById('importFile').click()"><i data-lucide="download"></i>Importa lista</button>
+  </div>
+
+  <!-- Barra utente attivo con icona -->
+  <div id="active_user_label" class="active-user-bar">
+    <i data-lucide="user"></i> <span>Nessun utente selezionato</span>
+  </div>
+
+  <!-- Gestione utenti -->
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px;">
+    <button onclick="addUser()"><i data-lucide="user-plus"></i> Nuovo Utente</button>
+    <button onclick="analyzeGroup()"><i data-lucide="bar-chart-2"></i> Analisi</button>
+    <div id="user_ui" style="display:flex; flex-wrap:wrap; gap:6px; flex:1;"></div>
+  </div>
+
+  <!-- Checklist completa -->
+  <div id="app"></div>
+</div>
+
+<!-- Contatti emergenza - Sezione collassabile -->
+<div id="emergencyContainer"></div>
+
+<!-- MODALE MAPPA -->
+<div id="routeModal" class="route-modal">
+  <div class="route-modal-card">
+    <div class="route-modal-header">
+      <span><i data-lucide="map"></i> Traccia Rotta Marina (GPS)</span>
+      <button onclick="closeRouteModal()" style="font-size:24px;">&times;</button>
+    </div>
+    <div class="route-modal-content">
+      <div id="routeMapFull"></div>
+      <div id="gpsCoordsModal" class="gps-coords">📍 GPS: in attesa di posizione...</div>
+      <div class="route-controls">
+        <button onclick="getLocationForRouteModal()"><i data-lucide="crosshair"></i> Mia posizione</button>
+        <button onclick="clearCurrentRouteModal()"><i data-lucide="trash-2"></i> Pulisci rotta</button>
+        <button onclick="undoLastPointModal()"><i data-lucide="undo-2"></i> Annulla ultimo</button>
+        <button onclick="newRouteModal()"><i data-lucide="plus"></i> Nuova rotta</button>
+        <button onclick="saveCurrentRouteModal()"><i data-lucide="save"></i> Salva rotta</button>
+        <button onclick="centerOnRouteModal()"><i data-lucide="crosshair"></i> Centra rotta</button>
+      </div>
+      <div class="import-route-area">
+        <strong><i data-lucide="upload"></i> Importa rotta singola:</strong>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
+          <input type="file" id="importSingleRouteFile" accept=".json,.gpx" style="flex:1; background:white;">
+          <button onclick="importSingleRouteFromFile()" style="background:#ca8a04; color:white;"><i data-lucide="upload"></i> Importa rotta</button>
+        </div>
+      </div>
+      <div class="distance-info" id="distanceInfoModal">📏 Distanza totale: 0 km</div>
+      <div class="waypoint-list" id="waypointListModal">Clicca sulla mappa per aggiungere waypoint</div>
+      <div class="saved-routes" id="savedRoutesContainerModal">
+        <strong>📌 Rotte salvate:</strong>
+        <div id="savedRoutesListModal"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== NAVIGAZIONE PANNELLI ====================
+function setActivePanel(panelId) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`panel-${panelId}`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    if(btn.dataset.panel === panelId) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => setActivePanel(btn.dataset.panel));
+});
+
+function openWindyInPanel() {
+  let lat = 38.1, lon = 13.35;
+  if(currentPositionForRoute) { lat = currentPositionForRoute.lat; lon = currentPositionForRoute.lng; }
+  window.open(`https://www.windy.com/?${lat.toFixed(4)},${lon.toFixed(4)},8/marine/waves,wind,i:pressure`, '_blank');
+}
+
+// ==================== ESPORTAZIONE ROTTA SINGOLA GPX ====================
+function exportRouteToGPX(routeName, points) {
+  if (!points || points.length < 2) {
+    alert("La rotta deve avere almeno 2 waypoint");
+    return;
+  }
+  
+  const pointsCopy = JSON.parse(JSON.stringify(points));
+  const gpxContent = generateGPX(pointsCopy, routeName, false);
+  if (gpxContent) {
+    const safeName = routeName.replace(/[^a-z0-9]/gi, '_').substring(0, 50);
+    const filename = `${safeName}.gpx`;
+    const blob = new Blob([gpxContent], { type: "application/gpx+xml" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    alert(`✅ Rotta "${routeName}" esportata come ${filename}`);
+  }
+}
+
+function importSingleRouteFromFile() {
+  const fileInput = document.getElementById("importSingleRouteFile");
+  if (!fileInput.files.length) { alert("Seleziona un file GPX o JSON"); return; }
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const content = e.target.result;
+      let points = [];
+      if (file.name.toLowerCase().endsWith('.gpx') || content.includes('<gpx')) {
+        const trkptRegex = /<trkpt lat="([^"]+)" lon="([^"]+)">/g;
+        let match;
+        while ((match = trkptRegex.exec(content)) !== null) {
+          points.push({ lat: parseFloat(match[1]), lng: parseFloat(match[2]) });
+        }
+        if (points.length === 0) {
+          const rteptRegex = /<rtept lat="([^"]+)" lon="([^"]+)">/g;
+          while ((match = rteptRegex.exec(content)) !== null) {
+            points.push({ lat: parseFloat(match[1]), lng: parseFloat(match[2]) });
+          }
+        }
+        if (points.length >= 2) {
+          const nameMatch = /<name>([^<]+)<\/name>/.exec(content);
+          const defaultName = nameMatch ? nameMatch[1] : `Rotta_${new Date().toLocaleTimeString()}`;
+          const name = prompt("Nome rotta:", defaultName);
+          if (name) { 
+            saveRouteToStorage(name, points); 
+            waypoints = JSON.parse(JSON.stringify(points)); 
+            currentRouteName = name; 
+            updateMapDrawingModal(); 
+            centerOnRouteModal(); 
+            alert(`Rotta "${name}" importata!`); 
+          }
+        } else alert("GPX non contiene waypoint validi");
+      } else {
+        const data = JSON.parse(content);
+        if (Array.isArray(data) && data.length >= 2 && data[0].lat !== undefined) points = data;
+        else if (data.type === "FeatureCollection" && data.features) {
+          for (let feat of data.features) {
+            if (feat.geometry && feat.geometry.coordinates) {
+              for (let coord of feat.geometry.coordinates) points.push({ lng: coord[0], lat: coord[1] });
+            }
+          }
+        }
+        if (points.length >= 2) {
+          const name = prompt("Nome rotta:", `Rotta_${new Date().toLocaleTimeString()}`);
+          if (name) { 
+            saveRouteToStorage(name, points); 
+            waypoints = JSON.parse(JSON.stringify(points)); 
+            currentRouteName = name; 
+            updateMapDrawingModal(); 
+            centerOnRouteModal(); 
+            alert(`Rotta "${name}" importata!`); 
+          }
+        } else alert("Formato non valido");
+      }
+      fileInput.value = "";
+    } catch(err) { alert("Errore: " + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+// ==================== CHECKLIST COMPLETA ====================
+const positions = ["GA","PH","DH","GP"];
+const posNames = {"GA":"Gavone Anteriore", "PH":"Pocket Hatch", "DH":"Day Hatch", "GP":"Gavone Posteriore"};
+const icons = {
+  "EQUIPAGGIAMENTO INDOSSATO":"<i data-lucide='user'></i>",
+  "PONTE KAYAK":"<i data-lucide='anchor'></i>",
+  "SISTEMA NOTTE":"<i data-lucide='moon'></i>",
+  "VESTITI DI RICAMBIO":"<i data-lucide='shirt'></i>",
+  "CUCINA":"<i data-lucide='flame'></i>",
+  "SISTEMA ACQUA":"<i data-lucide='droplet'></i>",
+  "SICUREZZA":"<i data-lucide='life-buoy'></i>",
+  "SISTEMA FUOCO / ATTREZZI":"<i data-lucide='flame'></i>",
+  "CIBO":"<i data-lucide='utensils'></i>",
+  "METEO":"<i data-lucide='cloud-sun'></i>",
+  "ALTRO":"<i data-lucide='plus'></i>",
+  "KIT PRIMO SOCCORSO":"<i data-lucide='heart-pulse'></i>",
+  "KIT IGIENE":"<i data-lucide='droplets'></i>",
+  "KIT RIPARAZIONE KAYAK":"<i data-lucide='wrench'></i>",
+  "KIT RIPARAZIONE OGGETTI":"<i data-lucide='settings'></i>",
+  "GAVONI":"<i data-lucide='package'></i>",
+  "NOTE":"<i data-lucide='notebook'></i>",
+  "LEGENDA":"<i data-lucide='book-open'></i>"
+};
+const EXCLUDED_FROM_ANALYSIS = ["EQUIPAGGIAMENTO INDOSSATO","PONTE KAYAK","SISTEMA NOTTE","VESTITI DI RICAMBIO"];
+
+const baseDataCheck = { 
+  "EQUIPAGGIAMENTO INDOSSATO":["PFD","Paraspruzzi","Muta stagna / Neoprene","Sottomuta","Calzari","Guanti o Moffole","Coltello rescue","Orologio","Fischietto","InReach","VHF","Leash pagaia","Occhiali da sole","Cappello con visiera","Snack"],
+  "PONTE KAYAK":["Pagaia principale","Pagaia di rispetto","Pompa di sentina/Sassola","Spugna","Paddle float","Cima traino","Contact line","Casco"],
+  "SISTEMA NOTTE":["Tenda/Tarp","Cordini","Pali","Picchetti","Materassino","Sacco a pelo","Cuscino","Bivi bag","Sacco letto"],
+  "VESTITI DI RICAMBIO":["Intimo","Baselayer","Midlayer","Giacca calda","Calze","Cappello di lana","Guanti di lana","Scarpe"],
+  "CUCINA":["Fornellino","Pentola","Posate","Tazza","Caffettiera","Carburante fornello","Spugna pulizia"],
+  "SISTEMA ACQUA":["Taniche","Borracce","Filtro acqua","Pastiglie purificatrici","Camel bag"],
+  "SICUREZZA":["Kit primo soccorso","Kit Igiene","Telefono in sacca stagna","Kit riparazione kayak","Kit riparazione oggetti","Luce frontale","Luci navigazione notturna","Power bank","Batterie","Cavi ricarica","Leatherman o Victorinox","Accendino","Crema solare","Sacchetti robusti","Sacche stagne","Poncho"],
+  "SISTEMA FUOCO / ATTREZZI":["Segaccio","Accetta","Acciarino","Inneschi","Coltello","Paletta"],
+  "KIT PRIMO SOCCORSO":[], "KIT IGIENE":[], "KIT RIPARAZIONE KAYAK":[], "KIT RIPARAZIONE OGGETTI":[], "ALTRO":[]
+};
+
+function loadCustomItemNames() {
+  const activeUser = localStorage.getItem("active_user");
+  if (!activeUser) return {};
+  const saved = localStorage.getItem(`custom_names_${activeUser}`);
+  return saved ? JSON.parse(saved) : {};
+}
+
+function saveCustomItemNames(customNames) {
+  const activeUser = localStorage.getItem("active_user");
+  if (activeUser) {
+    localStorage.setItem(`custom_names_${activeUser}`, JSON.stringify(customNames));
+  }
+}
+
+function getSectionItems(sectionName) {
+  const customNames = loadCustomItemNames();
+  const baseItems = baseDataCheck[sectionName] || [];
+  const customKey = `section_${sectionName}`;
+  const savedNames = customNames[customKey];
+  if (savedNames && Array.isArray(savedNames) && savedNames.length === baseItems.length) {
+    return savedNames;
+  }
+  return [...baseItems];
+}
+
+function updateDefaultItemName(sectionName, oldName, newName) {
+  const customNames = loadCustomItemNames();
+  const sectionKey = `section_${sectionName}`;
+  const baseItems = baseDataCheck[sectionName] || [];
+  const currentItems = customNames[sectionKey] ? customNames[sectionKey] : [...baseItems];
+  const index = currentItems.indexOf(oldName);
+  if (index !== -1) {
+    currentItems[index] = newName;
+    customNames[sectionKey] = currentItems;
+    saveCustomItemNames(customNames);
+    const stored = loadData();
+    const oldCheckboxId = sectionName + "_" + oldName;
+    const newCheckboxId = sectionName + "_" + newName;
+    if (stored[oldCheckboxId] !== undefined) {
+      stored[newCheckboxId] = stored[oldCheckboxId];
+      delete stored[oldCheckboxId];
+    }
+    positions.forEach(p => {
+      const oldPosId = oldCheckboxId + "_" + p;
+      const newPosId = newCheckboxId + "_" + p;
+      if (stored[oldPosId] !== undefined) {
+        stored[newPosId] = stored[oldPosId];
+        delete stored[oldPosId];
+      }
+    });
+    localStorage.setItem("checklist", JSON.stringify(stored));
+  }
+}
+
+function loadData() { return JSON.parse(localStorage.getItem("checklist")) || {}; }
+
+function saveCurrentState() {
+  let saved = loadData();
+  document.querySelectorAll("#app input, #app textarea").forEach(i => {
+    if (i.type === "checkbox") {
+      saved[i.id] = i.checked;
+    } else {
+      saved[i.id] = i.value;
+    }
+  });
+  localStorage.setItem("checklist", JSON.stringify(saved));
+  let active = localStorage.getItem("active_user");
+  if(active) saveCurrentForUser(active);
+  return saved;
+}
+
+function saveData(){ 
+  saveCurrentState();
+  alert("Salvato!"); 
+}
+function resetData(){ if(confirm("Reset?")){ 
+  const activeUser = localStorage.getItem("active_user");
+  if(activeUser) localStorage.removeItem(`custom_names_${activeUser}`);
+  localStorage.removeItem("checklist"); 
+  location.reload(); 
+}}
+function printChecklist(){ window.print(); }
+function shareChecklist(){ let saved = loadData(); let text = "AKC SEA KAYAK EXPEDITION PLAN\n👤 "+ (saved.user_name||"") +"\n🛶 Kayak: "+ (saved.kayak_type||""); if (navigator.share) navigator.share({title:"Checklist Kayak", text:text}); else { navigator.clipboard.writeText(text); alert("Checklist copiata!"); } }
+function saveCurrentForUser(user){ let all=JSON.parse(localStorage.getItem("akc_group")||"{}"); let current=loadData(); document.querySelectorAll("#app input, #app textarea").forEach(i=>{ current[i.id]=i.type==="checkbox"? i.checked:i.value; }); all[user]=current; localStorage.setItem("akc_group", JSON.stringify(all)); }
+function loadUser(user){ let all=JSON.parse(localStorage.getItem("akc_group")||"{}"); if(all[user]){ localStorage.setItem("checklist", JSON.stringify(all[user])); location.reload(); } }
+function addUser(){ let name=prompt("Nome nuovo utente:"); if(!name) return; let users=JSON.parse(localStorage.getItem("akc_users")||"[]"); if(!users.includes(name)){ users.push(name); localStorage.setItem("akc_users", JSON.stringify(users)); let all=JSON.parse(localStorage.getItem("akc_group")||"{}"); if(!all[name]) all[name]={}; localStorage.setItem("akc_group", JSON.stringify(all)); } renderUserUI(); }
+function deleteUser(user){ if(!confirm(`Eliminare "${user}"?`)) return; let users=JSON.parse(localStorage.getItem("akc_users")||"[]"); users=users.filter(u=>u!==user); localStorage.setItem("akc_users", JSON.stringify(users)); let all=JSON.parse(localStorage.getItem("akc_group")||"{}"); delete all[user]; localStorage.setItem("akc_group", JSON.stringify(all)); localStorage.removeItem(`custom_names_${user}`); if(localStorage.getItem("active_user")===user){ localStorage.removeItem("active_user"); localStorage.removeItem("checklist"); updateActiveUserLabel(); location.reload(); } else renderUserUI(); }
+function renderUserUI(){ let users=JSON.parse(localStorage.getItem("akc_users")||"[]"); let container=document.getElementById("user_ui"); if(!container) return; container.innerHTML=""; let activeUser=localStorage.getItem("active_user"); users.forEach(u=>{ let chip=document.createElement("div"); chip.className="user-chip"; if(u===activeUser) chip.classList.add("active"); let nameSpan=document.createElement("span"); nameSpan.innerText=u; nameSpan.style.cursor="pointer"; nameSpan.onclick=()=>{ saveCurrentState(); localStorage.setItem("active_user",u); updateActiveUserLabel(); loadUser(u); }; let delBtn=document.createElement("button"); delBtn.innerHTML="🗑️"; delBtn.onclick=(e)=>{ e.stopPropagation(); deleteUser(u); }; chip.appendChild(nameSpan); chip.appendChild(delBtn); container.appendChild(chip); }); }
+function analyzeGroup(){ let all=JSON.parse(localStorage.getItem("akc_group")||"{}"); let counts={}; Object.values(all).forEach(list=>{ Object.keys(list).forEach(k=>{ let excluded=false; for(let cat of EXCLUDED_FROM_ANALYSIS){ if(k.startsWith(cat+"_")){ excluded=true; break; } } if(!excluded && list[k]===true) counts[k]=(counts[k]||0)+1; }); }); let result="📊 DOPPIONI (esclusi base)\n"; let found=false; Object.keys(counts).forEach(k=>{ if(counts[k]>1){ result+="⚠️ "+k.replaceAll("_"," ")+" ("+counts[k]+" utenti)\n"; found=true; } }); if(!found) result+="✅ Nessun doppione!"; alert(result); }
+function updateActiveUserLabel(){ 
+  let active = localStorage.getItem("active_user"); 
+  let el = document.getElementById("active_user_label"); 
+  if(el) {
+    const textSpan = el.querySelector('span');
+    if(active) {
+      textSpan.innerText = "Utente attivo: " + active;
+    } else {
+      textSpan.innerText = "Nessun utente selezionato";
+    }
+  }
+}
+
+let openSections = new Set();
+
+function toggleSection(headerEl, sectionName) {
+  const content = headerEl.nextElementSibling;
+  if (content.style.display === "block") {
+    content.style.display = "none";
+    openSections.delete(sectionName);
+  } else {
+    content.style.display = "block";
+    openSections.add(sectionName);
+  }
+}
+
+function editDefaultItem(sectionName, oldItemName, currentDisplayName) {
+  const newName = prompt("Modifica nome elemento:", currentDisplayName);
+  if (!newName || newName === currentDisplayName) return;
+  saveCurrentState();
+  updateDefaultItemName(sectionName, currentDisplayName, newName);
+  const wasOpen = new Set(openSections);
+  renderFullChecklist();
+  setTimeout(() => {
+    for (let secName of wasOpen) {
+      const headers = document.querySelectorAll('.section-header');
+      for (let h of headers) {
+        if (h.innerText.includes(secName) || h.innerHTML.includes(secName)) {
+          const content = h.nextElementSibling;
+          if (content) content.style.display = "block";
+          break;
+        }
+      }
+    }
+    if(window.lucide) lucide.createIcons();
+  }, 50);
+}
+
+function editCustomItem(sectionName, oldItemName, newName) {
+  if (!newName || newName === oldItemName) return;
+  saveCurrentState();
+  const stored = loadData();
+  const key = sectionName + "_ALTRO";
+  let items = [];
+  if (stored[key]) { try { items = JSON.parse(stored[key]); } catch(e) {} }
+  const idx = items.indexOf(oldItemName);
+  if (idx !== -1) {
+    items[idx] = newName;
+    stored[key] = JSON.stringify(items);
+    const oldCheckboxId = sectionName + "_ALTRO_" + oldItemName;
+    const newCheckboxId = sectionName + "_ALTRO_" + newName;
+    if (stored[oldCheckboxId] !== undefined) {
+      stored[newCheckboxId] = stored[oldCheckboxId];
+      delete stored[oldCheckboxId];
+    }
+    positions.forEach(p => {
+      const oldPosId = oldCheckboxId + "_" + p;
+      const newPosId = newCheckboxId + "_" + p;
+      if (stored[oldPosId] !== undefined) {
+        stored[newPosId] = stored[oldPosId];
+        delete stored[oldPosId];
+      }
+    });
+  }
+  localStorage.setItem("checklist", JSON.stringify(stored));
+  const wasOpen = new Set(openSections);
+  renderFullChecklist();
+  setTimeout(() => {
+    for (let secName of wasOpen) {
+      const headers = document.querySelectorAll('.section-header');
+      for (let h of headers) {
+        if (h.innerText.includes(secName) || h.innerHTML.includes(secName)) {
+          const content = h.nextElementSibling;
+          if (content) content.style.display = "block";
+          break;
+        }
+      }
+    }
+    if(window.lucide) lucide.createIcons();
+  }, 50);
+}
+
+function addCustomItem(sectionName) {
+  const input = document.getElementById(`new_item_${sectionName}`);
+  const itemName = input ? input.value.trim() : prompt("Nome nuovo elemento:");
+  if (!itemName) return;
+  saveCurrentState();
+  const stored = loadData();
+  const key = sectionName + "_ALTRO";
+  let items = [];
+  if (stored[key]) { try { items = JSON.parse(stored[key]); } catch(e) {} }
+  if (!items.includes(itemName)) {
+    items.push(itemName);
+    stored[key] = JSON.stringify(items);
+    localStorage.setItem("checklist", JSON.stringify(stored));
+  }
+  if (input) input.value = "";
+  const wasOpen = new Set(openSections);
+  renderFullChecklist();
+  setTimeout(() => {
+    for (let secName of wasOpen) {
+      const headers = document.querySelectorAll('.section-header');
+      for (let h of headers) {
+        if (h.innerText.includes(secName) || h.innerHTML.includes(secName)) {
+          const content = h.nextElementSibling;
+          if (content) content.style.display = "block";
+          break;
+        }
+      }
+    }
+    if(window.lucide) lucide.createIcons();
+  }, 50);
+}
+
+function deleteCustomItem(sectionName, itemName) {
+  if (!confirm(`Eliminare "${itemName}" dalla sezione ${sectionName}?`)) return;
+  saveCurrentState();
+  const stored = loadData();
+  const key = sectionName + "_ALTRO";
+  let items = [];
+  if (stored[key]) { try { items = JSON.parse(stored[key]); } catch(e) {} }
+  items = items.filter(i => i !== itemName);
+  stored[key] = JSON.stringify(items);
+  const prefix = sectionName + "_ALTRO_" + itemName;
+  Object.keys(stored).forEach(k => { if(k.startsWith(prefix)) delete stored[k]; });
+  localStorage.setItem("checklist", JSON.stringify(stored));
+  const wasOpen = new Set(openSections);
+  renderFullChecklist();
+  setTimeout(() => {
+    for (let secName of wasOpen) {
+      const headers = document.querySelectorAll('.section-header');
+      for (let h of headers) {
+        if (h.innerText.includes(secName) || h.innerHTML.includes(secName)) {
+          const content = h.nextElementSibling;
+          if (content) content.style.display = "block";
+          break;
+        }
+      }
+    }
+    if(window.lucide) lucide.createIcons();
+  }, 50);
+}
+
+function renderFullChecklist(){
+  const app = document.getElementById("app");
+  if(!app) return;
+  app.innerHTML = "";
+  const saved = loadData();
+  
+  function renderSection(name, showPositions = true){
+    let div = document.createElement("div"); div.className = "section";
+    let h = document.createElement("div"); h.className = "section-header"; 
+    h.innerHTML = (icons[name] || "📋") + " " + name; 
+    h.onclick = (e) => { e.stopPropagation(); toggleSection(h, name); };
+    div.appendChild(h);
+    let c = document.createElement("div"); c.className = "section-content";
+    if (openSections.has(name)) c.style.display = "block";
+    
+    const items = getSectionItems(name);
+    
+    items.forEach(item => {
+      let row = document.createElement("div"); row.className = "item-row";
+      let label = document.createElement("label"); label.className = "main";
+      let id = name + "_" + item;
+      let cb = document.createElement("input"); cb.type = "checkbox"; cb.id = id;
+      if(saved[id]) cb.checked = true;
+      let itemSpan = document.createElement("span"); itemSpan.innerText = item;
+      label.appendChild(cb); label.appendChild(itemSpan);
+      
+      let editBtn = document.createElement("button"); 
+      editBtn.innerHTML = "✏️"; 
+      editBtn.className = "edit-item-btn"; 
+      editBtn.onclick = (e) => { e.stopPropagation(); editDefaultItem(name, item, item); };
+      
+      let posDiv = document.createElement("div"); posDiv.className = "pos";
+      if(showPositions){
+        positions.forEach(p => {
+          let pid = id + "_" + p;
+          let pl = document.createElement("label");
+          let pcb = document.createElement("input"); pcb.type = "checkbox"; pcb.id = pid;
+          if(saved[pid]) pcb.checked = true;
+          pcb.addEventListener("change", function(){ 
+            if(this.checked) {
+              positions.forEach(other => { 
+                if(other !== p){ 
+                  let otherId = id + "_" + other; 
+                  let otherCb = document.getElementById(otherId); 
+                  if(otherCb) otherCb.checked = false; 
+                } 
+              });
+            }
+          });
+          pl.appendChild(pcb); 
+          let t = document.createElement("span"); 
+          t.innerText = p; 
+          pl.appendChild(t); 
+          posDiv.appendChild(pl);
+        });
+      } else { let emptySpan = document.createElement("span"); emptySpan.style.width = "80px"; emptySpan.style.display = "inline-block"; posDiv.appendChild(emptySpan); }
+      row.appendChild(label); row.appendChild(editBtn); row.appendChild(posDiv);
+      c.appendChild(row);
+    });
+    
+    let extraKey = name + "_ALTRO";
+    let extraItems = []; if(saved[extraKey]){ try{ extraItems = JSON.parse(saved[extraKey]); }catch(e){} }
+    extraItems.forEach((it, idx) => {
+      let row = document.createElement("div"); row.className = "item-row";
+      let label = document.createElement("label"); label.className = "main";
+      let id = name + "_ALTRO_" + it;
+      let cb = document.createElement("input"); cb.type = "checkbox"; cb.id = id;
+      if(saved[id]) cb.checked = true;
+      let itemSpan = document.createElement("span"); itemSpan.innerText = it;
+      label.appendChild(cb); label.appendChild(itemSpan);
+      
+      let editBtn = document.createElement("button"); 
+      editBtn.innerHTML = "✏️"; 
+      editBtn.className = "edit-item-btn"; 
+      editBtn.onclick = (e) => { 
+        e.stopPropagation(); 
+        const newName = prompt("Modifica nome elemento:", it);
+        if (newName && newName !== it) editCustomItem(name, it, newName);
+      };
+      
+      let posDiv = document.createElement("div"); posDiv.className = "pos";
+      if(showPositions){
+        positions.forEach(p => {
+          let pid = id + "_" + p;
+          let pl = document.createElement("label");
+          let pcb = document.createElement("input"); pcb.type = "checkbox"; pcb.id = pid;
+          if(saved[pid]) pcb.checked = true;
+          pcb.addEventListener("change", function(){ 
+            if(this.checked) {
+              positions.forEach(other => { 
+                if(other !== p){ 
+                  let otherId = id + "_" + other; 
+                  let otherCb = document.getElementById(otherId); 
+                  if(otherCb) otherCb.checked = false; 
+                } 
+              });
+            }
+          });
+          pl.appendChild(pcb); 
+          let t = document.createElement("span"); 
+          t.innerText = p; 
+          pl.appendChild(t); 
+          posDiv.appendChild(pl);
+        });
+      } else { posDiv.appendChild(document.createElement("span")); }
+      row.appendChild(label); row.appendChild(editBtn); row.appendChild(posDiv);
+      let delBtn = document.createElement("button"); delBtn.innerHTML = "❌"; delBtn.className = "delete-item-btn"; delBtn.onclick = () => deleteCustomItem(name, it);
+      row.appendChild(delBtn); c.appendChild(row);
+    });
+    
+    let addRow = document.createElement("div"); addRow.className = "add-item-row";
+    let newInput = document.createElement("input"); newInput.type = "text"; newInput.placeholder = "Nuovo elemento..."; newInput.id = `new_item_${name}`;
+    let addBtn = document.createElement("button"); addBtn.innerHTML = '<i data-lucide="plus"></i> Aggiungi'; addBtn.onclick = () => addCustomItem(name);
+    addRow.appendChild(newInput); addRow.appendChild(addBtn);
+    c.appendChild(addRow);
+    
+    div.appendChild(c); app.appendChild(div);
+  }
+  
+  renderSection("EQUIPAGGIAMENTO INDOSSATO", false);
+  renderSection("PONTE KAYAK", false);
+  renderSection("SISTEMA NOTTE", true);
+  renderSection("VESTITI DI RICAMBIO", true);
+  renderSection("CUCINA", true);
+  renderSection("SISTEMA ACQUA", true);
+  renderSection("SICUREZZA", true);
+  renderSection("SISTEMA FUOCO / ATTREZZI", true);
+  renderSection("KIT PRIMO SOCCORSO", true);
+  renderSection("KIT IGIENE", true);
+  renderSection("KIT RIPARAZIONE KAYAK", true);
+  renderSection("KIT RIPARAZIONE OGGETTI", true);
+  renderSection("ALTRO", true);
+  
+  // CIBO
+  let foodDiv = document.createElement("div"); foodDiv.className = "section";
+  let fh = document.createElement("div"); fh.className = "section-header"; fh.innerHTML = icons["CIBO"] + " CIBO"; fh.onclick = (e) => { e.stopPropagation(); toggleSection(fh, "CIBO"); };
+  foodDiv.appendChild(fh);
+  let fc = document.createElement("div"); fc.className = "section-content";
+  if (openSections.has("CIBO")) fc.style.display = "block";
+  
+  let foodDays = saved["food_days"] || 1;
+  for(let i = 1; i <= foodDays; i++){
+    let dayDiv = document.createElement("div"); dayDiv.className = "day";
+    let dayHeader = document.createElement("div"); dayHeader.className = "day-header";
+    dayHeader.innerHTML = `<b>🍽️ Giorno ${i}</b>`;
+    let dayContent = document.createElement("div"); dayContent.style.display = "none";
+    dayHeader.onclick = () => { dayContent.style.display = dayContent.style.display === "block" ? "none" : "block"; };
+    let delDayBtn = document.createElement("button"); delDayBtn.innerHTML = "❌"; delDayBtn.style.fontSize = "10px"; delDayBtn.style.marginLeft = "10px";
+    delDayBtn.onclick = (e) => { e.stopPropagation(); let stored = loadData(); stored["food_days"] = Math.max(1, (stored["food_days"] || 1) - 1); localStorage.setItem("checklist", JSON.stringify(stored)); const wasOpen = new Set(openSections); renderFullChecklist(); setTimeout(() => { for(let s of wasOpen) { let headers = document.querySelectorAll('.section-header'); for(let hh of headers) if(hh.innerText.includes(s) || hh.innerHTML.includes(s)) { let cc = hh.nextElementSibling; if(cc) cc.style.display = "block"; break; } } }, 50); };
+    dayHeader.appendChild(delDayBtn);
+    dayDiv.appendChild(dayHeader);
+    ["Colazione", "Pranzo", "Cena"].forEach(meal => {
+      let mealLabel = document.createElement("div"); mealLabel.className = "meal"; mealLabel.innerText = meal;
+      let mealInput = document.createElement("input"); mealInput.id = `food_${i}_${meal}`; if(saved[mealInput.id]) mealInput.value = saved[mealInput.id];
+      dayContent.appendChild(mealLabel); dayContent.appendChild(mealInput);
+    });
+    dayDiv.appendChild(dayContent); fc.appendChild(dayDiv);
+  }
+  let addDayBtn = document.createElement("button"); addDayBtn.innerHTML = '<i data-lucide="plus"></i> Aggiungi giorno'; addDayBtn.style.marginTop = "8px";
+  addDayBtn.onclick = () => { let stored = loadData(); stored["food_days"] = (stored["food_days"] || 1) + 1; localStorage.setItem("checklist", JSON.stringify(stored)); const wasOpen = new Set(openSections); renderFullChecklist(); setTimeout(() => { for(let s of wasOpen) { let headers = document.querySelectorAll('.section-header'); for(let hh of headers) if(hh.innerText.includes(s) || hh.innerHTML.includes(s)) { let cc = hh.nextElementSibling; if(cc) cc.style.display = "block"; break; } } }, 50); };
+  fc.appendChild(addDayBtn); foodDiv.appendChild(fc); app.appendChild(foodDiv);
+  
+  // METEO
+  let meteoDiv = document.createElement("div"); meteoDiv.className = "section";
+  let mh = document.createElement("div"); mh.className = "section-header"; mh.innerHTML = icons["METEO"] + " METEO"; mh.onclick = (e) => { e.stopPropagation(); toggleSection(mh, "METEO"); };
+  meteoDiv.appendChild(mh);
+  let mc = document.createElement("div"); mc.className = "section-content";
+  if (openSections.has("METEO")) mc.style.display = "block";
+  
+  let meteoDays = saved["meteo_days"] || 1;
+  for(let i = 1; i <= meteoDays; i++){
+    let dayDiv = document.createElement("div"); dayDiv.className = "day";
+    let dayHeader = document.createElement("div"); dayHeader.className = "day-header";
+    dayHeader.innerHTML = `<b>🌤️ Giorno ${i}</b>`;
+    let dayContent = document.createElement("div"); dayContent.style.display = "none";
+    dayHeader.onclick = () => { dayContent.style.display = dayContent.style.display === "block" ? "none" : "block"; };
+    let delDayBtn = document.createElement("button"); delDayBtn.innerHTML = "❌"; delDayBtn.style.fontSize = "10px"; delDayBtn.style.marginLeft = "10px";
+    delDayBtn.onclick = (e) => { e.stopPropagation(); let stored = loadData(); stored["meteo_days"] = Math.max(1, (stored["meteo_days"] || 1) - 1); localStorage.setItem("checklist", JSON.stringify(stored)); const wasOpen = new Set(openSections); renderFullChecklist(); setTimeout(() => { for(let s of wasOpen) { let headers = document.querySelectorAll('.section-header'); for(let hh of headers) if(hh.innerText.includes(s) || hh.innerHTML.includes(s)) { let cc = hh.nextElementSibling; if(cc) cc.style.display = "block"; break; } } }, 50); };
+    dayHeader.appendChild(delDayBtn);
+    dayDiv.appendChild(dayHeader);
+    ["Mattina", "Pomeriggio", "Sera"].forEach(part => {
+      let partLabel = document.createElement("div"); partLabel.className = "meal"; partLabel.innerText = part;
+      let partInput = document.createElement("input"); partInput.id = `meteo_${i}_${part}`; if(saved[partInput.id]) partInput.value = saved[partInput.id];
+      dayContent.appendChild(partLabel); dayContent.appendChild(partInput);
+    });
+    dayDiv.appendChild(dayContent); mc.appendChild(dayDiv);
+  }
+  let addMeteoDayBtn = document.createElement("button"); addMeteoDayBtn.innerHTML = '<i data-lucide="plus"></i> Aggiungi giorno'; addMeteoDayBtn.style.marginTop = "8px";
+  addMeteoDayBtn.onclick = () => { let stored = loadData(); stored["meteo_days"] = (stored["meteo_days"] || 1) + 1; localStorage.setItem("checklist", JSON.stringify(stored)); const wasOpen = new Set(openSections); renderFullChecklist(); setTimeout(() => { for(let s of wasOpen) { let headers = document.querySelectorAll('.section-header'); for(let hh of headers) if(hh.innerText.includes(s) || hh.innerHTML.includes(s)) { let cc = hh.nextElementSibling; if(cc) cc.style.display = "block"; break; } } }, 50); };
+  mc.appendChild(addMeteoDayBtn); meteoDiv.appendChild(mc); app.appendChild(meteoDiv);
+  
+  // GAVONI
+  let gavDiv = document.createElement("div"); gavDiv.className = "section";
+  let gh = document.createElement("div"); gh.className = "section-header"; gh.innerHTML = icons["GAVONI"] + " GAVONI"; gh.onclick = (e) => { e.stopPropagation(); toggleSection(gh, "GAVONI"); };
+  gavDiv.appendChild(gh);
+  let gc = document.createElement("div"); gc.className = "section-content";
+  if (openSections.has("GAVONI")) gc.style.display = "block";
+  for(let pos of positions){
+    let sub = document.createElement("div"); sub.style.marginBottom = "10px";
+    let sh = document.createElement("div"); sh.style.fontWeight = "bold"; sh.innerText = posNames[pos];
+    let sc = document.createElement("div");
+    let itemsFound = [];
+    for(let key in saved) {
+      if(saved[key] === true && key.endsWith("_" + pos)) {
+        let itemName = key.substring(0, key.lastIndexOf("_" + pos)).replace(/_/g, " ");
+        itemsFound.push(itemName);
+      }
+    }
+    if(itemsFound.length===0) sc.innerHTML = "<div style='padding:5px; color:#64748b;'>📦 Nessun articolo</div>";
+    else itemsFound.forEach(item => { let divItem = document.createElement("div"); divItem.className = "gavone-item"; divItem.innerHTML = "📌 " + item; sc.appendChild(divItem); });
+    sub.appendChild(sh); sub.appendChild(sc); gc.appendChild(sub);
+  }
+  gavDiv.appendChild(gc); app.appendChild(gavDiv);
+  
+  // NOTE
+  let noteDiv = document.createElement("div"); noteDiv.className = "section";
+  let nh = document.createElement("div"); nh.className = "section-header"; nh.innerHTML = icons["NOTE"] + " NOTE"; nh.onclick = (e) => { e.stopPropagation(); toggleSection(nh, "NOTE"); };
+  noteDiv.appendChild(nh);
+  let nc = document.createElement("div"); nc.className = "section-content";
+  if (openSections.has("NOTE")) nc.style.display = "block";
+  let ta = document.createElement("textarea"); ta.id = "notes"; if(saved["notes"]) ta.value = saved["notes"]; ta.rows = 4;
+  nc.appendChild(ta); noteDiv.appendChild(nc); app.appendChild(noteDiv);
+  
+  // LEGENDA
+  let legDiv = document.createElement("div"); legDiv.className = "section";
+  let lh = document.createElement("div"); lh.className = "section-header"; lh.innerHTML = icons["LEGENDA"] + " LEGENDA"; lh.onclick = (e) => { e.stopPropagation(); toggleSection(lh, "LEGENDA"); };
+  legDiv.appendChild(lh);
+  let lc = document.createElement("div"); lc.className = "section-content";
+  if (openSections.has("LEGENDA")) lc.style.display = "block";
+  lc.innerHTML = "GA = Gavone anteriore<br>PH = Pocket Hatch<br>DH = Day Hatch<br>GP = Gavone posteriore";
+  legDiv.appendChild(lc); app.appendChild(legDiv);
+}
+
+// ==================== EMERGENZA - SEZIONE COLLASSABILE ====================
+let emergencyContacts = [];
+let currentPositionForSat = null;
+
+function loadEmergencyContacts(){ 
+  let s=localStorage.getItem("emergency_contacts"); 
+  if(s) emergencyContacts=JSON.parse(s); 
+  if(emergencyContacts.length===0) emergencyContacts=[
+    {name:"Emergenza Mare",phone:"1530",email:"",note:"Numero unico emergenza"},
+    {name:"118",phone:"118",email:"",note:"Pronto Soccorso"},
+    {name:"Guardia Costiera",phone:"1530",email:"",note:"Soccorso"}
+  ]; 
+  saveEmergencyContacts(); 
+}
+
+function saveEmergencyContacts(){ 
+  localStorage.setItem("emergency_contacts", JSON.stringify(emergencyContacts)); 
+  renderEmergencyContacts(); 
+}
+
+function renderEmergencyContacts(){ 
+  let c=document.getElementById("emergencyContainer"); 
+  if(!c) return; 
+  c.innerHTML=""; 
+  let div=document.createElement("div"); 
+  div.className="section emergency-section"; 
+  let h=document.createElement("div"); 
+  h.className="section-header"; 
+  h.innerHTML='📞 CONTATTI EMERGENZA'; 
+  h.style.background="#fecaca"; 
+  h.style.color="#991b1b";
+  
+  let isEmergencyOpen = openSections.has("EMERGENZA");
+  h.onclick=(e)=>{ 
+    e.stopPropagation(); 
+    let content = h.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+      openSections.delete("EMERGENZA");
+    } else {
+      content.style.display = "block";
+      openSections.add("EMERGENZA");
+    }
+  };
+  div.appendChild(h);
+  
+  let content=document.createElement("div"); 
+  content.className="section-content"; 
+  content.style.display = isEmergencyOpen ? "block" : "none";
+  
+  emergencyContacts.forEach((ct,idx)=>{ 
+    let card=document.createElement("div"); 
+    card.className="contact-card"; 
+    card.innerHTML=`<div class="contact-info">
+        <div class="contact-name">${escapeHtml(ct.name)}</div>
+        <div class="contact-detail">📞 ${ct.phone||"—"}</div>
+        <div class="contact-detail">${ct.note||""}</div>
+      </div>
+      <div class="contact-actions">
+        <button class="btn-emergency" data-type="sms" data-idx="${idx}">💬 SMS</button>
+        <button class="btn-emergency" data-type="call" data-idx="${idx}">📞 Chiama</button>
+        <button class="btn-sat" data-type="sat" data-idx="${idx}">🛰️ Sat (copia)</button>
+        <button class="edit-contact" data-idx="${idx}">✏️</button>
+        <button class="delete-contact" data-idx="${idx}">🗑️</button>
+      </div>`; 
+    content.appendChild(card); 
+  }); 
+  
+  let add=document.createElement("button"); 
+  add.innerHTML='<i data-lucide="plus-circle"></i> Aggiungi contatto'; 
+  add.onclick=()=>{ 
+    let n=prompt("Nome:"); 
+    if(!n) return; 
+    let p=prompt("Telefono:"); 
+    let email=prompt("Email (opzionale):");
+    let note=prompt("Note (opzionale):");
+    emergencyContacts.push({name:n,phone:p||"",email:email||"",note:note||""}); 
+    saveEmergencyContacts(); 
+  }; 
+  content.appendChild(add); 
+  div.appendChild(content); 
+  c.appendChild(div); 
+  
+  attachContactEvents();
+  if(window.lucide) lucide.createIcons();
+}
+
+function attachContactEvents() {
+  document.querySelectorAll(".btn-emergency[data-type='sms']").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      let idx = btn.dataset.idx;
+      let c = emergencyContacts[idx];
+      if(c.phone) window.location.href = `sms:${c.phone}?body=SOS Kayak - Ho bisogno di assistenza`;
+      else alert("Numero di telefono non disponibile");
+    };
+  });
+  
+  document.querySelectorAll(".btn-emergency[data-type='call']").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      let idx = btn.dataset.idx;
+      let c = emergencyContacts[idx];
+      if(c.phone) window.location.href = `tel:${c.phone}`;
+      else alert("Numero di telefono non disponibile");
+    };
+  });
+  
+  document.querySelectorAll(".btn-sat").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      let idx = btn.dataset.idx;
+      let c = emergencyContacts[idx];
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            const msg = `🚨 SOS KAYAK 🚨\n\nContatto: ${c.name}\nTelefono: ${c.phone || 'Non disponibile'}\n\n📍 POSIZIONE GPS:\nLat: ${lat}\nLng: ${lng}\nhttps://www.google.com/maps?q=${lat},${lng}\n\n📅 ${new Date().toLocaleString()}\n\nMessaggio: Richiesta assistenza immediata - Kayak expedition`;
+            navigator.clipboard.writeText(msg);
+            alert(`✅ Messaggio SOS copiato negli appunti!\n\nPosizione GPS: ${lat}, ${lng}\n\nPuoi ora incollarlo nel tuo dispositivo satellitare (InReach, Messenger, ecc.)`);
+          },
+          (error) => {
+            const msg = `🚨 SOS KAYAK 🚨\n\nContatto: ${c.name}\nTelefono: ${c.phone || 'Non disponibile'}\n\n⚠️ GPS non disponibile al momento\nData/Ora: ${new Date().toLocaleString()}\n\nMessaggio: Richiesta assistenza immediata - Kayak expedition`;
+            navigator.clipboard.writeText(msg);
+            alert(`✅ Messaggio SOS copiato negli appunti!\n\n⚠️ Posizione GPS non disponibile - Inserisci manualmente le coordinate nel messaggio prima di inviare.\n\nPuoi ora incollarlo nel tuo dispositivo satellitare.`);
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      } else {
+        const msg = `🚨 SOS KAYAK 🚨\n\nContatto: ${c.name}\nTelefono: ${c.phone || 'Non disponibile'}\n\n⚠️ GPS non supportato\nData/Ora: ${new Date().toLocaleString()}\n\nMessaggio: Richiesta assistenza immediata - Kayak expedition`;
+        navigator.clipboard.writeText(msg);
+        alert(`✅ Messaggio SOS copiato negli appunti!\n\nPuoi ora incollarlo nel tuo dispositivo satellitare.`);
+      }
+    };
+  });
+  
+  document.querySelectorAll(".edit-contact").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      let idx = btn.dataset.idx;
+      let c = emergencyContacts[idx];
+      c.name = prompt("Nome:", c.name) || c.name;
+      c.phone = prompt("Telefono:", c.phone) || c.phone;
+      c.email = prompt("Email:", c.email) || c.email;
+      c.note = prompt("Note:", c.note) || c.note;
+      saveEmergencyContacts();
+    };
+  });
+  
+  document.querySelectorAll(".delete-contact").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      let idx = btn.dataset.idx;
+      if(confirm("Eliminare questo contatto?")) {
+        emergencyContacts.splice(idx, 1);
+        saveEmergencyContacts();
+      }
+    };
+  });
+}
+
+function escapeHtml(str){ if(!str) return ""; return str.replace(/[&<>]/g,function(m){return m==='&'?'&amp;':m==='<'?'&lt;':'&gt;';}); }
+
+// ==================== FUNZIONI ROTTE (CORRETTE - SENZA SOVRASCRITTURA) ====================
+let routeMap = null, waypoints = [], markers = [], polyline = null, currentRouteName = null, currentPositionForRoute = null;
+
+function haversineDistance(l1,ln1,l2,ln2){ 
+  const R=6371; 
+  const dLat=(l2-l1)*Math.PI/180; 
+  const dLon=(ln2-ln1)*Math.PI/180; 
+  const a=Math.sin(dLat/2)**2+Math.cos(l1*Math.PI/180)*Math.cos(l2*Math.PI/180)*Math.sin(dLon/2)**2; 
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); 
+}
+
+function calculateTotalDistance(p){ 
+  let t=0; 
+  for(let i=1;i<p.length;i++) t+=haversineDistance(p[i-1].lat,p[i-1].lng,p[i].lat,p[i].lng); 
+  return t; 
+}
+
+function updateMapDrawingModal(){ 
+  if(!routeMap) return; 
+  markers.forEach(m=>routeMap.removeLayer(m)); 
+  markers=[]; 
+  if(polyline) routeMap.removeLayer(polyline); 
+  waypoints.forEach((wp,idx)=>{ 
+    let m=L.marker([wp.lat,wp.lng],{draggable:true}); 
+    m.bindPopup(`Punto ${idx+1}`); 
+    m.on('dragend',e=>{ 
+      waypoints[idx]={lat:e.target.getLatLng().lat,lng:e.target.getLatLng().lng}; 
+      updateMapDrawingModal(); 
+      autoSaveCurrentRouteModal(); 
+    }); 
+    m.addTo(routeMap); 
+    markers.push(m); 
+  }); 
+  if(waypoints.length>=2) polyline=L.polyline(waypoints.map(wp=>[wp.lat,wp.lng]),{color:'#dc2626',weight:5}).addTo(routeMap); 
+  document.getElementById("distanceInfoModal").innerHTML=`📏 Distanza: ${calculateTotalDistance(waypoints).toFixed(2)} km | ${waypoints.length} waypoint`; 
+  let cont=document.getElementById("waypointListModal"); 
+  if(waypoints.length===0) cont.innerHTML='Clicca sulla mappa per aggiungere waypoint'; 
+  else{ 
+    let h=''; 
+    waypoints.forEach((wp,idx)=>{ 
+      let d=0; 
+      for(let i=1;i<=idx;i++) d+=haversineDistance(waypoints[i-1].lat,waypoints[i-1].lng,waypoints[i].lat,waypoints[i].lng); 
+      h+=`<div class="waypoint-item"><span><strong>${idx+1}</strong> ${wp.lat.toFixed(5)},${wp.lng.toFixed(5)}</span><span>📏 ${d.toFixed(2)} km</span></div>`; 
+    }); 
+    cont.innerHTML=h; 
+  } 
+}
+
+function addWaypointModal(lat,lng){ 
+  waypoints.push({lat,lng}); 
+  updateMapDrawingModal(); 
+  autoSaveCurrentRouteModal(); 
+}
+
+function undoLastPointModal(){ 
+  if(waypoints.length) {
+    waypoints.pop(); 
+    updateMapDrawingModal(); 
+    if(currentRouteName && waypoints.length >= 2) {
+      autoSaveCurrentRouteModal();
+    } else if(waypoints.length < 2 && currentRouteName) {
+      let saved = JSON.parse(localStorage.getItem("saved_routes_permanent") || "{}");
+      if(saved[currentRouteName]) {
+        if(confirm(`La rotta "${currentRouteName}" non ha più waypoint validi. Eliminarla definitivamente?`)) {
+          delete saved[currentRouteName];
+          localStorage.setItem("saved_routes_permanent", JSON.stringify(saved));
+          currentRouteName = null;
+          renderSavedRoutesListModal();
+          alert(`Rotta eliminata perché non più valida`);
+        }
+      }
+    }
+  } 
+}
+
+function clearCurrentRouteModal(){ 
+  if(confirm("Cancellare tutti i waypoint dalla mappa?")) {
+    waypoints = []; 
+    currentRouteName = null; 
+    updateMapDrawingModal(); 
+  } 
+}
+
+function centerOnRouteModal(){ 
+  if(routeMap && waypoints.length) routeMap.fitBounds(L.latLngBounds(waypoints.map(wp=>[wp.lat,wp.lng]))); 
+}
+
+function autoSaveCurrentRouteModal(){ 
+  if(currentRouteName && waypoints.length >= 2) {
+    saveRouteToStorage(currentRouteName, waypoints);
+    console.log(`Auto-salvataggio rotta "${currentRouteName}" con ${waypoints.length} waypoint`);
+  } else if(currentRouteName && waypoints.length < 2) {
+    console.log(`Rotta "${currentRouteName}" non salvata - waypoint insufficienti (${waypoints.length})`);
+  }
+}
+
+function saveRouteToStorage(name, points){
+  let saved = JSON.parse(localStorage.getItem("saved_routes_permanent") || "{}");
+  saved[name] = JSON.parse(JSON.stringify(points));
+  localStorage.setItem("saved_routes_permanent", JSON.stringify(saved));
+  renderSavedRoutesListModal();
+  console.log(`Rotta "${name}" salvata con ${points.length} waypoint`);
+}
+
+function saveCurrentRouteModal(){ 
+  if(waypoints.length < 2) {
+    alert("Aggiungi almeno 2 waypoint prima di salvare la rotta"); 
+    return;
+  } 
+  let n = prompt("Nome rotta:", currentRouteName || `Rotta_${new Date().toLocaleDateString()}`); 
+  if(n){ 
+    let saved = JSON.parse(localStorage.getItem("saved_routes_permanent") || "{}");
+    if(saved[n] && !confirm(`La rotta "${n}" esiste già. Vuoi sovrascriverla?`)) {
+      return;
+    }
+    currentRouteName = n; 
+    saveRouteToStorage(n, waypoints); 
+    alert(`Rotta "${n}" salvata con ${waypoints.length} waypoint!`); 
+  } 
+}
+
+function loadRouteModal(n){ 
+  let s = JSON.parse(localStorage.getItem("saved_routes_permanent")||"{}"); 
+  if(s[n]){ 
+    if(waypoints.length >= 2 && currentRouteName) {
+      if(confirm(`Salvare la rotta corrente "${currentRouteName}" prima di caricare "${n}"?`)) {
+        saveRouteToStorage(currentRouteName, waypoints);
+      }
+    }
+    waypoints = JSON.parse(JSON.stringify(s[n])); 
+    currentRouteName = n; 
+    updateMapDrawingModal(); 
+    centerOnRouteModal(); 
+    alert(`Rotta "${n}" caricata (${waypoints.length} waypoint)`); 
+  } else {
+    alert(`Rotta "${n}" non trovata`);
+  }
+}
+
+function deleteSavedRouteModal(n){ 
+  if(confirm(`Eliminare definitivamente la rotta "${n}"?`)){ 
+    let s=JSON.parse(localStorage.getItem("saved_routes_permanent")||"{}"); 
+    delete s[n]; 
+    localStorage.setItem("saved_routes_permanent",JSON.stringify(s)); 
+    if(currentRouteName === n){ 
+      waypoints=[]; 
+      currentRouteName=null; 
+      updateMapDrawingModal(); 
+    } 
+    renderSavedRoutesListModal(); 
+    alert(`Rotta "${n}" eliminata`); 
+  } 
+}
+
+function newRouteModal(){
+  if(waypoints.length >= 2 && currentRouteName) {
+    if(confirm(`Vuoi salvare la rotta corrente "${currentRouteName}" prima di crearne una nuova?`)) {
+      saveRouteToStorage(currentRouteName, waypoints);
+    }
+  }
+  waypoints = [];
+  currentRouteName = null;
+  updateMapDrawingModal();
+  alert("Nuova rotta creata. Aggiungi waypoint cliccando sulla mappa.");
+}
+
+function renderSavedRoutesListModal(){ 
+  let s=JSON.parse(localStorage.getItem("saved_routes_permanent")||"{}"); 
+  let c=document.getElementById("savedRoutesListModal"); 
+  if(!c) return; 
+  if(Object.keys(s).length===0){ 
+    c.innerHTML="<div>Nessuna rotta salvata</div>"; 
+    return; 
+  } 
+  let h=''; 
+  for(let n in s){ 
+    let d=calculateTotalDistance(s[n]); 
+    let safeName = n.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    let pointsJson = JSON.stringify(s[n]).replace(/"/g, '&quot;');
+    h+=`<div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin:5px 0; background:#e2e8f0; border-radius:32px; padding:6px 12px;">
+          <span onclick="loadRouteModal('${safeName}')" style="flex:1; cursor:pointer;">🗺️ ${n} (${d.toFixed(1)} km)</span>
+          <button onclick="event.stopPropagation(); exportRouteToGPX('${safeName}', ${pointsJson})" style="background:#007dc3; color:white; margin:0 5px; padding:4px 10px; border:none; border-radius:20px; cursor:pointer;">📁 GPX</button>
+          <button onclick="event.stopPropagation(); deleteSavedRouteModal('${safeName}')" style="background:#dc2626; color:white; margin:0; padding:4px 10px; border:none; border-radius:20px; cursor:pointer;">❌</button>
+        </div>`; 
+  } 
+  c.innerHTML = h; 
+}
+
+function generateGPX(points,name,extended){ 
+  if(points.length<2) return null; 
+  let gpx=`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="AKC Sea Kayak Expedition Planner" xmlns="http://www.topografix.com/GPX/1/1">\n  <metadata>\n    <name>${escapeXml(name)}</name>\n    <desc>Rotta kayak marino - ${points.length} waypoint - ${calculateTotalDistance(points).toFixed(2)} km</desc>\n  </metadata>\n  <trk>\n    <name>${escapeXml(name)}</name>\n    <trkseg>\n`; 
+  points.forEach((p,i)=>{ 
+    gpx+=`      <trkpt lat="${p.lat}" lon="${p.lng}">\n        <time>${new Date(Date.now()+i*60000).toISOString()}</time>\n      </trkpt>\n`; 
+  }); 
+  gpx+=`    </trkseg>\n  </trk>\n  <rte>\n    <name>${escapeXml(name)} - Waypoint</name>\n`; 
+  points.forEach((p,i)=>{ 
+    gpx+=`    <rtept lat="${p.lat}" lon="${p.lng}">\n      <name>WP${i+1}</name>\n    </rtept>\n`; 
+  }); 
+  gpx+=`  </rte>\n</gpx>`; 
+  return gpx; 
+}
+
+function escapeXml(unsafe) { 
+  if (!unsafe) return ""; 
+  return unsafe.replace(/[<>&'"]/g, function(c) { 
+    if (c === '<') return '&lt;'; 
+    if (c === '>') return '&gt;'; 
+    if (c === '&') return '&amp;'; 
+    if (c === "'") return '&apos;'; 
+    if (c === '"') return '&quot;'; 
+    return c; 
+  }); 
+}
+
+function initRouteMapModal(centerLat=38.1,centerLon=13.35){ 
+  let c=document.getElementById("routeMapFull"); 
+  if(!c) return; 
+  if(routeMap) routeMap.remove(); 
+  routeMap=L.map('routeMapFull').setView([centerLat,centerLon],9); 
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(routeMap); 
+  routeMap.on('click',e=>addWaypointModal(e.latlng.lat,e.latlng.lng)); 
+}
+
+function getLocationForRouteModal(){ 
+  if(navigator.geolocation){ 
+    navigator.geolocation.getCurrentPosition(pos=>{ 
+      currentPositionForRoute={lat:pos.coords.latitude,lng:pos.coords.longitude}; 
+      currentPositionForSat=currentPositionForRoute; 
+      document.getElementById("gpsCoordsModal").innerHTML=`📍 GPS: ${currentPositionForRoute.lat.toFixed(5)},${currentPositionForRoute.lng.toFixed(5)}`; 
+      if(routeMap){ 
+        routeMap.setView([currentPositionForRoute.lat,currentPositionForRoute.lng],13); 
+        L.marker([currentPositionForRoute.lat,currentPositionForRoute.lng]).addTo(routeMap).bindPopup("La tua posizione").openPopup(); 
+      } 
+    },()=>alert("GPS non disponibile")); 
+  } else alert("GPS non supportato"); 
+}
+
+function openRouteModal(){ 
+  let m=document.getElementById("routeModal"); 
+  m.style.display="block"; 
+  document.body.style.overflow="hidden"; 
+  setTimeout(()=>{ 
+    if(!routeMap) initRouteMapModal(); 
+    else routeMap.invalidateSize(); 
+    getLocationForRouteModal(); 
+    renderSavedRoutesListModal(); 
+    updateMapDrawingModal(); 
+  },100); 
+}
+
+function closeRouteModal(){ 
+  document.getElementById("routeModal").style.display="none"; 
+  document.body.style.overflow=""; 
+}
+
+// ==================== ESPORTAZIONE COMPLETA ====================
+function exportCompleteList(){
+  let u=localStorage.getItem("active_user");
+  if(!u){alert("Seleziona un utente");return;}
+  let data={
+    user:{id:u},
+    checklist:loadData(),
+    routes:JSON.parse(localStorage.getItem("saved_routes_permanent")||"{}")
+  };
+  let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  let a=document.createElement("a"); 
+  a.href=URL.createObjectURL(blob); 
+  a.download=`${u}_export.json`; 
+  a.click();
+}
+
+function importCompleteList(e){
+  let f=e.target.files[0]; 
+  if(!f) return;
+  let r=new FileReader();
+  r.onload=ev=>{ 
+    try{ 
+      let d=JSON.parse(ev.target.result); 
+      if(d.checklist) localStorage.setItem("checklist",JSON.stringify(d.checklist)); 
+      if(d.routes) localStorage.setItem("saved_routes_permanent",JSON.stringify(d.routes)); 
+      if(d.user?.id) localStorage.setItem("active_user",d.user.id); 
+      location.reload(); 
+    } catch(err){alert("Errore import");} 
+  };
+  r.readAsText(f);
+}
+
+// Avvio
+document.addEventListener("DOMContentLoaded",()=>{
+  renderUserUI();
+  renderFullChecklist();
+  loadEmergencyContacts();
+  renderSavedRoutesListModal();
+  updateActiveUserLabel();
+  if(window.lucide) lucide.createIcons();
+});
+</script>
+</body>
+</html>

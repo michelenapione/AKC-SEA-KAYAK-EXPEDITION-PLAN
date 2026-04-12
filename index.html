@@ -1846,7 +1846,6 @@ function closeRouteModal() {
   if(statusBtn) statusBtn.style.display = 'none';
 }
 
-// MODIFICA 2: Marker GPS visibile
 function getUserLocation() {
   if(navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(pos => {
@@ -1855,19 +1854,30 @@ function getUserLocation() {
       if(routeMap) {
         routeMap.setView([lat, lng], 13);
         
-        // Aggiungi marker GPS visibile
+        // Rimuovi marker precedente
         if(window.gpsMarker) routeMap.removeLayer(window.gpsMarker);
+        
+        // Crea marker GPS GRANDE e VISIBILE
         const gpsIcon = L.divIcon({
-          html: '<div style="background-color:#10b981; width:16px; height:16px; border-radius:50%; border:3px solid white; box-shadow:0 0 0 2px #10b981;"></div>',
-          iconSize: [16,16],
+          html: '<div style="background-color: #10b981; width: 24px; height: 24px; border-radius: 50%; border: 4px solid white; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.4); animation: pulse-green 1.5s infinite;"></div>',
+          iconSize: [24, 24],
           className: 'gps-marker'
         });
-        window.gpsMarker = L.marker([lat, lng], {icon: gpsIcon, zIndexOffset: 1000})
-          .bindPopup('📍 La tua posizione')
-          .addTo(routeMap);
+        
+        window.gpsMarker = L.marker([lat, lng], {
+          icon: gpsIcon,
+          zIndexOffset: 1000  // Porta in primo piano
+        }).bindPopup('📍 La tua posizione attuale').addTo(routeMap);
+        
+        // Apri il popup automaticamente per conferma visiva
+        window.gpsMarker.openPopup();
       }
       if(miniMap) miniMap.setView([lat, lng], 13);
+    }, (error) => {
+      alert("Errore GPS: " + error.message);
     });
+  } else {
+    alert("Geolocalizzazione non supportata");
   }
 }
 

@@ -501,6 +501,31 @@ body {
   50% { transform: scale(1.2); opacity: 0.8; }
   100% { transform: scale(1); opacity: 1; }
 }
+  /* STILE MARKER GPS - VISIBILITÀ GARANTITA */
+.gps-marker {
+  animation: pulse-green 1.5s infinite !important;
+  filter: drop-shadow(0 0 10px #10b981) !important;
+}
+
+@keyframes pulse-green {
+  0% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: scale(1.4); 
+    opacity: 0.6; 
+  }
+  100% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
+/* Assicura che il marker sia visibile sopra tutto */
+.leaflet-marker-pane {
+  z-index: 600 !important;
+}
 </style>
 </head>
 <body>

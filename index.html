@@ -1886,9 +1886,21 @@ function getUserLocation() {
         lat = Number(lat);
         lng = Number(lng);
         
-        // Rimuovi marker precedenti
-        if(window.gpsMarker) routeMap.removeLayer(window.gpsMarker);
-        if(window.gpsCircle) routeMap.removeLayer(window.gpsCircle);
+        // Rimuovi TUTTI i possibili marker GPS precedenti
+if(window.gpsMarker) routeMap.removeLayer(window.gpsMarker);
+if(window.gpsCircle) routeMap.removeLayer(window.gpsCircle);
+if(window.testMarker) routeMap.removeLayer(window.testMarker);  // Marker di test
+if(window.testCircle) routeMap.removeLayer(window.testCircle);  // Cerchio di test
+
+// Inoltre, cerca e rimuovi qualsiasi layer con classe 'gps-marker'
+routeMap.eachLayer(layer => {
+  if(layer instanceof L.Marker) {
+    const icon = layer.getIcon();
+    if(icon && icon.options.className === 'gps-marker') {
+      routeMap.removeLayer(layer);
+    }
+  }
+});
         
         // PRIMA centra la mappa
         routeMap.setView([lat, lng], 15);
